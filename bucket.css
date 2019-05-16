@@ -1,8 +1,9 @@
 .bucket-shape {
   background: #000000 url("bucket-filled.png") no-repeat;
+  background-size: contain;
   border-style: solid;
   border-top: none;
 
-  width: 1024px;
-  height: 768px;
+  width: 400px;
+  height: 300px;
 }
