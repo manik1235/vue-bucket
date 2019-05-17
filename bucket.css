@@ -8,4 +8,11 @@
 
 .drain-shape {
   background: #666666 ;
+  height: 400px;
+  width: 300px;
+}
+
+.drain-canvas {
+  height: 300px;
+  width: 300px;
 }

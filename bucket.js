@@ -23,13 +23,22 @@ Vue.component('drain', {
   },
   methods: {
     draw: function () {
-      $( document ).ready( function () {
-        var $canvasses = $( '.drain-canvas' );
+      var $canvasses,
+        ctx;
+      $(function () {
+        $canvasses = $( '.drain-canvas' );
         $canvasses.each( function ( index, canvas ) {
-          if (canvas.getContext) {
-            var ctx = canvas.getContext('2d');
-            ctx.moveTo(0, 0);
-            ctx.lineTo(200, 100);
+          ctx = canvas.getContext('2d');
+          if (index == 0) {
+            if (canvas.getContext) {
+              ctx.moveTo(0, 0);
+              ctx.lineTo(200, 100);
+              ctx.stroke();
+            }
+          } else {
+            ctx.beginPath();
+            ctx.moveTo(20, 20);
+            ctx.bezierCurveTo(20, 110, 220, 0, 220, 220);
             ctx.stroke();
           }
         })
@@ -54,8 +63,12 @@ var bucketComplex = new Vue({
   el: "#bucket-complex",
   data: {
     drains: [
-      { id: 1, title: 'I give to other' },
-      { id: 2, title: 'Other takes from me' }
+      { id: 1,
+        title: 'I give to other'
+      },
+      { id: 2,
+        title: 'Other takes from me'
+      }
     ]
   }
 })
