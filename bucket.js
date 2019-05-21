@@ -15,7 +15,7 @@ Vue.component('bucket', {
 })
 
 Vue.component('drain', {
-  props: ['id', 'title'],
+  props: ['id', 'title', 'bezier'],
   data: function () {
     return {
       drain: "Drain"
@@ -24,21 +24,26 @@ Vue.component('drain', {
   methods: {
     draw: function () {
       var $canvasses,
+        $drain,
         ctx;
-      $(function () {
+      $(function (event) {
         $canvasses = $( '.drain-canvas' );
         $canvasses.each( function ( index, canvas ) {
           ctx = canvas.getContext('2d');
           if (index == 0) {
-            if (canvas.getContext) {
-              ctx.moveTo(0, 0);
-              ctx.lineTo(200, 100);
-              ctx.stroke();
-            }
-          } else {
+            $drain = $('#drain-1');
+            ctx.font = "30px Arial";
+            ctx.fillText(`ID: ${$drain.prop('id')}, title: ${$drain.prop("title")}`, 10, 50);
+          } else if (index == 1) {
             ctx.beginPath();
             ctx.moveTo(20, 20);
             ctx.bezierCurveTo(20, 110, 220, 0, 220, 220);
+            ctx.stroke();
+          } else {
+            $drain = $('#drain-3');
+            ctx.beginPath();
+            ctx.moveTo(20, 20);
+            ctx.bezierCurveTo(...($drain.attr('bezier').split(',').map(p => parseInt(p))));
             ctx.stroke();
           }
         })
@@ -50,7 +55,7 @@ Vue.component('drain', {
     <div class="row">
       <div class="col drain-shape">
         <h3>{{ id }}: {{ title }}</h3>
-        <canvas v-bind:id="'drain-' + id" class="drain-canvas">
+        <canvas v-bind:id="'drain-' + id" v-bind:title="title" v-bind:bezier="bezier" class="drain-canvas">
           <!-- I could render an html partial if the browser doesn't support canvas -->
         </canvas>
         {{ draw() }}
@@ -68,6 +73,10 @@ var bucketComplex = new Vue({
       },
       { id: 2,
         title: 'Other takes from me'
+      },
+      { id: 3,
+        title: 'Bezier curve test',
+        bezier: [20, 110, 220, 0, 220, 220]
       }
     ]
   }
